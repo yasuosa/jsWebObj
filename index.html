@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.bootcss.com/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-color: aqua;
+        }
+
+        .main_name{
+            text-align: center;
+            height: 80px;
+            background-color: red;
+            line-height: 80px;
+            font-size: 30px;
+        }
+
+        .main_jsq{
+            background-color: pink;
+            height: 500px;
+        }
+
+        .jsq_item{
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            border:  1px solid #000;
+            text-align: center;
+            line-height: 50px;
+            margin: 5px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<input type="button" id="btn" value="单个开始(5s)">
+<input type="button" id="btn2" value="偶数开始(5s)">
+<input type="button" id="btn3" value="基数开始(5s)">
+<input type="button" id="btn4" value="5个开始(5s)">
+<input type="button" id="btn5" value="自定义几个个开始(5s)">
+<div class="header">
+
+</div>
+<div class="main">
+    <div class="main_name">
+        <p>点名器基本信息</p>
+    </div>
+    <div class="main_jsq">
+
+    </div>
+</div>
+
+
+
+<script src="common.js"></script>
+
+
+<script>
+    var names=[];
+    var  value_nums=[];
+
+    var number=1;
+
+    var index_num=[];
+    for (let i = 0; i < 150; i++) {
+        names.push(i+"");
+    }
+    var jsq = document.querySelector(".main_jsq");
+    for (let i = 0; i < names.length; i++) {
+        let divObj = document.createElement("div");
+        jsq.appendChild(divObj);
+        divObj.setAttribute("class","jsq_item");
+        divObj.innerText=names[i];
+
+    }
+    my$("btn").onclick=function(){
+        f1(1);
+    };
+
+    my$("btn2").onclick=function () {
+        f1(2);
+    };
+
+    my$("btn3").onclick=function () {
+        f1(3);
+    };
+
+
+    my$("btn4").addEventListener("click",function () {
+        number=5;
+       f1(4) ;
+    });
+
+    my$("btn5").onclick=function () {
+       number=parseInt(prompt("请输入你需要抽选个个数"));
+       f1(4);
+    };
+
+
+    function dontStart() {
+        var btnObj = document.getElementsByTagName("input");
+        for (let i = 0; i < btnObj.length; i++) {
+            btnObj[i].disabled=true;
+        }
+    }
+
+    function doStart() {
+        var btnObj = document.getElementsByTagName("input");
+        for (let i = 0; i < btnObj.length; i++) {
+            btnObj[i].disabled=false;
+        }
+    }
+
+
+    function f1(flag) {
+        dontStart();
+        var random=null;
+        var time=setInterval(function () {
+            switch (flag) {
+                case 1:
+                    random=Math.floor(Math.random()*names.length);
+                    index_num.push(random);
+                    break;
+                case 2:
+                    random=Math.floor(Math.random()*names.length);
+                    random=random%2==0?random:random+1;
+                    index_num.push(random);
+                    break;
+
+                case 3:
+                    random=Math.floor(Math.random()*names.length);
+                    random=random%2==0?random+1:random;
+                    index_num.push(random);
+                    break;
+
+                case 4:
+                    for (let i = 0; i < number; i++) {
+                        random=Math.floor(Math.random()*names.length);
+                        index_num.push(random);
+                    }
+                    break
+            }
+            bg_select(index_num);
+        },150);
+
+
+        setTimeout(function () {
+            clearInterval(time);
+            doStart();
+            var str="";
+            console.log(value_nums);
+            value_nums.splice(0,value_nums.length-number);
+
+            var ans=sort(value_nums);
+            for (let i = 0; i <ans.length; i++) {
+               str+=ans[i]+" ";
+            }
+            alert(str);
+            number=1;
+
+        },5000);
+    }
+
+
+
+
+    function sort(arr) {
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr.length-i-1; j++) {
+                if(arr[j]>arr[j+1]){
+                    var temp=arr[j];
+                    arr[j]=arr[j+1];
+                    arr[j+1]=temp;
+                }
+            }
+        }
+
+        return arr;
+    }
+
+
+
+
+    function bg_select(index_s) {
+        var children = jsq.children;
+                for (let i = 0; i < children.length; i++) {
+            children[i].style.backgroundColor="";
+        }
+        for (let i = 0; i < index_s.length; i++) {
+            children[index_s[i]].style.backgroundColor="red";
+            value_nums.push(parseInt(children[index_s[i]].innerText));
+            index_num.splice(i,1);
+        }
+    }
+
+
+
+</script>
+</body>
+</html>
