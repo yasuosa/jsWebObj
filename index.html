@@ -190,7 +190,10 @@
         }
         for (let i = 0; i < index_s.length; i++) {
             children[index_s[i]].style.backgroundColor="red";
-            value_nums.push(parseInt(children[index_s[i]].innerText));
+            // if(value_nums.indexOf(0,value_nums.length))
+            if(value_nums.indexOf(parseInt(children[index_s[i]].innerText),0)==-1) {
+                value_nums.push(parseInt(children[index_s[i]].innerText));
+            }
             index_num.splice(i,1);
         }
     }
