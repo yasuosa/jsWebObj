@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.bootcss.com/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: aqua;
+        }
+
+        .main_name {
+            text-align: center;
+            height: 80px;
+            background-color: red;
+            line-height: 80px;
+            font-size: 30px;
+        }
+
+        .main_jsq {
+            background-color: pink;
+            height: 500px;
+        }
+
+        .jsq_item {
+            font-size: 15px;
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            text-align: center;
+            line-height: 50px;
+            margin: 5px;
+            float: left;
+            transition: background-color 200ms;
+        }
+    </style>
+</head>
+<body>
+<input type="button" id="btn" value="单个开始(5s)">
+<input type="button" id="btn2" value="偶数开始(5s)">
+<input type="button" id="btn3" value="基数开始(5s)">
+<input type="button" id="btn4" value="5个开始(5s)">
+<input type="button" id="btn5" value="自定义几个个开始(5s)">
+<div class="header">
+
+</div>
+<div class="main">
+    <div class="main_name">
+        <p>点名器基本信息</p>
+    </div>
+    <div class="main_jsq">
+
+    </div>
+</div>
+
+
+<script src="common.js"></script>
+
+
+<script>
+    let names = [];
+    let index_s = [];
+    for (let i = 1; i <= 150; i++) {
+        names.push(i + "号");
+        index_s.push(i);
+    }
+
+
+    var jsqObj = document.querySelector(".main_jsq");
+    for (let i = 0; i < names.length; i++) {
+        var boxObj = document.createElement("div");
+        jsqObj.appendChild(boxObj);
+        boxObj.setAttribute("class", "jsq_item");
+        boxObj.innerText = names[i];
+    }
+
+
+    var number;
+    my$("btn5").onclick = function () {
+        number = parseInt(prompt("请输入你抽取的个数"));
+        if(number>20){
+            alert("最多输入二十个")
+        }else {
+            start();
+        }
+    };
+
+
+    let ans_nums = [];
+    let  time;
+    function start() {
+        ans_nums.splice(0,ans_nums.length);
+        time = setInterval(run, 250);
+        setTimeout(over, 5000);
+    }
+
+
+
+    function over() {
+        clearInterval(time);
+        console.log(ans_nums);
+        var str="";
+        for (let i = 0; i < jsqObj.children.length; i++) {
+            jsqObj.children[i].style.backgroundColor="";
+            index_s[i]=i+1;
+        }
+        for (let i = 0; i < ans_nums.length; i++) {
+            str+=names[ans_nums[i]-1]+",";
+            jsqObj.children[ans_nums[i]-1].style.backgroundColor="red";
+        }
+
+        /**
+         * js
+         */
+        setTimeout(function () {
+            alert(str);
+        },200);
+    }
+    function run() {
+        let random = Math.floor(Math.random() * index_s.length);
+        if(ans_nums.length!=number) {
+            ans_nums.push(index_s[random]);
+        }
+        index_s.splice(random, 1);
+        box_bg_select(ans_nums);
+    }
+
+
+    function box_bg_select() {
+        for (let i = 0; i < jsqObj.children.length; i++) {
+            jsqObj.children[i].style.backgroundColor="";
+        }
+        for (let i = 0; i < number; i++) {
+            var random=Math.floor(Math.random()*jsqObj.children.length);
+            jsqObj.children[random].style.backgroundColor="red";
+        }
+    }
+
+
+</script>
+</body>
+</html>
